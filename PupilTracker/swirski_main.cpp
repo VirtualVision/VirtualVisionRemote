@@ -154,7 +154,7 @@ int main(int argc, char** argv)
     occulography.set(CV_CAP_PROP_FRAME_WIDTH, CAMERA_FRAME_WIDTH);
     occulography.set(CV_CAP_PROP_FRAME_HEIGHT, CAMERA_FRAME_HEIGHT);
 
-	// intialize the display window if necessary
+	//intialize the display window if necessary
 	if(displayMode)
 	{
 		cvNamedWindow("eyeImage", CV_WINDOW_NORMAL);
@@ -208,6 +208,7 @@ int main(int argc, char** argv)
 		stringMsg += std::to_string(result.pupil_center.y);
 		s_send(dataPub, stringMsg);
 		//std::cout << "sending " << msg << std::endl;
+
             }
             else
             {
@@ -235,12 +236,9 @@ int main(int argc, char** argv)
 
 			//create message
 			zmq_msg_t msg;
-
 			zmq_msg_t rmsg;
 			zmq_msg_t cmsg;
-
 			int rc;
-
 			try
 			{
 				rows = &displayImage.rows;
@@ -250,15 +248,12 @@ int main(int argc, char** argv)
 			{
 				std::cerr << "1bad_alloc caught: " << ba.what() << '\n';
 			}
-
 			rc = zmq_msg_init_size(&rmsg, sizeof(*rows));
 			rc = zmq_msg_init_size(&cmsg, sizeof(*cols));
 			memcpy(zmq_msg_data(&rmsg), rows, sizeof(*rows));
 			memcpy(zmq_msg_data(&cmsg), cols, sizeof(*cols));
-
 			rc = zmq_msg_send(&rmsg, imgPub, ZMQ_SNDMORE);
 			rc = zmq_msg_send(&cmsg, imgPub, ZMQ_SNDMORE);
-
 			int image_size = displayImage.total() * displayImage.elemSize();
 			uchar * image_uchar;
 			try
@@ -269,7 +264,6 @@ int main(int argc, char** argv)
 			{
 				std::cerr << "2bad_alloc caught: " << ba.what() << '\n';
 			}
-
 			memcpy(image_uchar, displayImage.data, image_size * sizeof(uchar));
 			rc = zmq_msg_init_size(&msg, image_size * sizeof(uchar));
 			if (rc == 0)

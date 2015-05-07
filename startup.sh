@@ -1,27 +1,14 @@
+sudo modprobe bcm2835-v4l2
 i=0
-while [ "$i" -lt 1 ]
+#while [ $i -lt 0 ]
+while [ true ]
 do
 	if test $(ps -e | grep swirski_tracker -o)
 	then
-		i=$((i+1))
+		r=$((i))
+		#echo "tracker detected"
 	else
-		sudo /home/pi/build/PupilTracker/swirski_tacker &
-		i=$((i+1))
+		sudo /home/pi/build/PupilTracker/swirski_tracker
+		#echo "need to start tracker"
 	fi
-i=$((i+1))
 done
-
-#from rc.local for backup
-#i=0
-#while [ "$i" -lt 1 ]
-#do
-#	if test $(ps -e | grep swirski_tracker -o)
-#	then
-#		echo "tracker is running."
-#	else
-#		echo "tracker is NOT running."
-#		echo "start the tracker!"
-#		sudo /home/pi/VirtualVisionRemote/startup.sh &
-#	fi
-#	i=$((i+1))
-#done
