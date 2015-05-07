@@ -1,29 +1,27 @@
-echo "initial initializing the raspicam."
-sudo modprobe bcm2835-v4l2
-
-isRunning=$(ps -e | grep swirski_tracker -o)
-
-#echo $isRunning
-
 i=0
-
-#echo $i
-
-while [ "$i" -lt 5 ]
+while [ "$i" -lt 1 ]
 do
-	if  [ $isRunning ]; then
-		echo "tracker is running."
+	if test $(ps -e | grep swirski_tracker -o)
+	then
+		i=$((i+1))
 	else
-		echo "tracker is NOT running."
-		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-		/home/pi/build/PupilTracker/swirski_tracker
+		sudo /home/pi/build/PupilTracker/swirski_tacker &
+		i=$((i+1))
 	fi
-#	i=$((i+1))
-	isRunning=""
+i=$((i+1))
 done
+
+#from rc.local for backup
+#i=0
+#while [ "$i" -lt 1 ]
+#do
+#	if test $(ps -e | grep swirski_tracker -o)
+#	then
+#		echo "tracker is running."
+#	else
+#		echo "tracker is NOT running."
+#		echo "start the tracker!"
+#		sudo /home/pi/VirtualVisionRemote/startup.sh &
+#	fi
+#	i=$((i+1))
+#done
